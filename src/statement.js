@@ -7,19 +7,21 @@ function statement (invoice, plays) {
         { style: "currency", currency: "USD",
             minimumFractionDigits: 2 }).format;
 
-    for (let perf of invoice.performances) {g
-        let thisAmount = getAmount(perf);
-
+    for (let perf of invoice.performances) {
+        //3 ㅎ함수 인라인하기
         volumeCredits += Math.max(perf.audience - 30, 0);
         if ("comedy" === playFor(perf).type) volumeCredits += Math.floor(perf.audience / 5);
-        // print line for this order
-        result += ` ${playFor(perf).name}: ${format(thisAmount/100)} (${perf.audience} seats)\n`;
-        totalAmount += thisAmount;
+
+        result += ` ${playFor(perf).name}: ${format(getAmount(perf)/100)} (${perf.audience} seats)\n`;
+        totalAmount += getAmount(perf);
     }
     result += `Amount owed is ${format(totalAmount/100)}\n`;
     result += `You earned ${volumeCredits} credits\n`;
     return result;
 }
+
+
+
 //2 임시변수를 질의 함수로 바꾸기 & 변수 쉽게 만들기
 function playFor(performance) {
     return plays[performance.playID];
