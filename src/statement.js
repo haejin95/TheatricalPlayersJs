@@ -8,10 +8,8 @@ function statement (invoice, plays) {
             minimumFractionDigits: 2 }).format;
 
     for (let perf of invoice.performances) {
-        //3 ㅎ함수 인라인하기
-        volumeCredits += Math.max(perf.audience - 30, 0);
-        if ("comedy" === playFor(perf).type) volumeCredits += Math.floor(perf.audience / 5);
-
+        //3 함수 인라인하기
+        volumeCredits += getVolumeCredit(perf);
         result += ` ${playFor(perf).name}: ${format(getAmount(perf)/100)} (${perf.audience} seats)\n`;
         totalAmount += getAmount(perf);
     }
@@ -20,7 +18,15 @@ function statement (invoice, plays) {
     return result;
 }
 
-
+//4 함수 또 추출하기
+function getVolumeCredit(performance) {
+    let result = 0;
+    result += Math.max(performance.audience - 30, 0);
+    if ("comedy" === playFor(performance).type) {
+        result += Math.floor(performance.audience / 5)
+    }
+    return result;
+}
 
 //2 임시변수를 질의 함수로 바꾸기 & 변수 쉽게 만들기
 function playFor(performance) {
