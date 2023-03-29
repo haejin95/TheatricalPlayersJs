@@ -3,19 +3,22 @@ function statement (invoice, plays) {
     let totalAmount = 0;
     let volumeCredits = 0;
     let result = `Statement for ${invoice.customer}\n`;
-    const format = new Intl.NumberFormat("en-US",
-        { style: "currency", currency: "USD",
-            minimumFractionDigits: 2 }).format;
-
     for (let perf of invoice.performances) {
         //3 함수 인라인하기
         volumeCredits += getVolumeCredit(perf);
-        result += ` ${playFor(perf).name}: ${format(getAmount(perf)/100)} (${perf.audience} seats)\n`;
+        result += ` ${playFor(perf).name}: ${usd(getAmount(perf))} (${perf.audience} seats)\n`;
         totalAmount += getAmount(perf);
     }
-    result += `Amount owed is ${format(totalAmount/100)}\n`;
+    result += `Amount owed is ${usd(totalAmount)}\n`;
     result += `You earned ${volumeCredits} credits\n`;
     return result;
+}
+
+//format 함수 추출하고, /100 합쳐주기
+function usd(number) {
+    return new Intl.NumberFormat("en-US",
+        { style: "currency", currency: "USD",
+            minimumFractionDigits: 2 }).format(number/100);
 }
 
 //4 함수 또 추출하기
