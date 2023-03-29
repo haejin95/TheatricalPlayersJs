@@ -1,20 +1,23 @@
 
 function statement (invoice, plays) {
     let totalAmount = 0;
-    let volumeCredits = 0;
     let result = `Statement for ${invoice.customer}\n`;
     for (let perf of invoice.performances) {
         //3 함수 인라인하기
-        volumeCredits += getVolumeCredit(perf);
         result += ` ${playFor(perf).name}: ${usd(getAmount(perf))} (${perf.audience} seats)\n`;
-        totalAmount += getAmount(perf);
+        totalAmount += getAmount(perf)
+    }
+    //6. 반복문 쪼개기
+    let volumeCredits = 0;
+    for (let perf of invoice.performances) {
+        volumeCredits += getVolumeCredit(perf);
     }
     result += `Amount owed is ${usd(totalAmount)}\n`;
     result += `You earned ${volumeCredits} credits\n`;
     return result;
 }
 
-//format 함수 추출하고, /100 합쳐주기
+//5. format 함수 추출하고, /100 합쳐주기
 function usd(number) {
     return new Intl.NumberFormat("en-US",
         { style: "currency", currency: "USD",
