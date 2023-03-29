@@ -1,17 +1,25 @@
 
-function statement (invoice, plays) {
-    let totalAmount = 0;
+function statement (invoice) {
     let result = `Statement for ${invoice.customer}\n`;
     for (let perf of invoice.performances) {
         //3 함수 인라인하기
         result += ` ${playFor(perf).name}: ${usd(getAmount(perf))} (${perf.audience} seats)\n`;
-        totalAmount += getAmount(perf)
     }
     //6. 반복문 쪼개기
-    result += `Amount owed is ${usd(totalAmount)}\n`;
+    result += `Amount owed is ${usd(totalAmount())}\n`;
     result += `You earned ${totalVolumeCredit()} credits\n`;
     return result;
 }
+
+//8. 반복문 쪼개기(반복)
+function totalAmount() {
+    let result = 0;
+    for (let perf of invoice.performances) {
+        result += getAmount(perf);
+    }
+    return result;
+}
+
 //7. 쪼갠 반복문 함수 추출하기(임시변수 제거)
 function totalVolumeCredit() {
     let result = 0;
